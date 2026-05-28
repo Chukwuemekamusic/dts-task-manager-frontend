@@ -1,0 +1,20 @@
+{% extends "govuk/template.njk" %}
+
+{% from "govuk/components/header/macro.njk" import govukHeader %}
+
+{% block head %}
+  {% include "webpack/css.njk" %}
+{% endblock %}
+
+{% block header %}
+  {{ govukHeader({
+    homepageUrl: "https://www.gov.uk",
+    serviceName: "Manage tasks",
+    serviceUrl: "/tasks"
+  }) }}
+{% endblock %}
+
+{% block bodyEnd %}
+  {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+  {% include "webpack/js.njk" %}
+{% endblock %}

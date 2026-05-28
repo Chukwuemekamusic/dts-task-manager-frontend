@@ -1,0 +1,85 @@
+{% extends "template.njk" %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "macros/csrf.njk" import csrfProtection %}
+
+{% block pageTitle %}{% if errors.list.length %}Error: {% endif %}{{ pageHeading }} - Manage tasks{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({ text: backText, href: backHref }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if errors.list.length %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errors.list
+        }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-xl">{{ pageHeading }}</h1>
+
+      <form method="post" action="{{ formAction }}" novalidate>
+        {{ csrfProtection(csrfToken) }}
+
+        {{ govukInput({
+          id: "title",
+          name: "title",
+          label: { text: "Title", classes: "govuk-label--m" },
+          value: values.title,
+          errorMessage: errors.fields.title
+        }) }}
+
+        {{ govukCharacterCount({
+          id: "description",
+          name: "description",
+          maxlength: 2000,
+          label: { text: "Description (optional)", classes: "govuk-label--m" },
+          value: values.description,
+          errorMessage: errors.fields.description
+        }) }}
+
+        {{ govukRadios({
+          idPrefix: "status",
+          name: "status",
+          fieldset: { legend: { text: "Status", classes: "govuk-fieldset__legend--m" } },
+          items: statusOptions(values.status),
+          errorMessage: errors.fields.status
+        }) }}
+
+        {{ govukDateInput({
+          id: "dueDate",
+          namePrefix: "dueDate",
+          fieldset: { legend: { text: "Due date", classes: "govuk-fieldset__legend--m" } },
+          hint: { text: "For example, 27 3 2026" },
+          errorMessage: errors.fields.dueDate,
+          items: [
+            { name: "day", classes: "govuk-input--width-2", value: values['dueDate-day'] },
+            { name: "month", classes: "govuk-input--width-2", value: values['dueDate-month'] },
+            { name: "year", classes: "govuk-input--width-4", value: values['dueDate-year'] }
+          ]
+        }) }}
+
+        {{ govukInput({
+          id: "dueTime",
+          name: "dueTime",
+          label: { text: "Due time", classes: "govuk-label--m" },
+          hint: { text: "Use the 24-hour clock, for example 09:30 or 17:00" },
+          classes: "govuk-input--width-5",
+          value: values.dueTime,
+          errorMessage: errors.fields.dueTime
+        }) }}
+
+        {{ govukButton({ text: submitText }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

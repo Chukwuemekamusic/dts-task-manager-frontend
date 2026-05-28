@@ -1,0 +1,63 @@
+{% extends "template.njk" %}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "macros/csrf.njk" import csrfProtection %}
+
+{% block pageTitle %}{% if errors.list.length %}Error: {% endif %}{{ task.title }} - Manage tasks{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({ text: "Back to tasks", href: "/tasks" }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if errors.list.length %}
+        {{ govukErrorSummary({ titleText: "There is a problem", errorList: errors.list }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-xl">{{ task.title }}</h1>
+
+      {% set s = statusPresentation(task.status) %}
+      {% set statusHtml %}{{ govukTag({ text: s.label, classes: "govuk-tag--" + s.colour }) }}{% endset %}
+
+      {% set rows = [] %}
+      {% set ignored = rows.push({ key: { text: "Status" }, value: { html: statusHtml } }) %}
+      {% if task.description %}
+        {% set ignored = rows.push({ key: { text: "Description" }, value: { text: task.description } }) %}
+      {% endif %}
+      {% set ignored = rows.push({ key: { text: "Due date" }, value: { text: task.dueDateTime | formatDateTime } }) %}
+      {% set ignored = rows.push({ key: { text: "Created" }, value: { text: task.createdAt | formatDateTime } }) %}
+      {% set ignored = rows.push({ key: { text: "Last updated" }, value: { text: task.updatedAt | formatDateTime } }) %}
+
+      {{ govukSummaryList({ rows: rows }) }}
+
+      <h2 class="govuk-heading-m">Change status</h2>
+      <form method="post" action="/tasks/{{ task.id }}/status" novalidate>
+        {{ csrfProtection(csrfToken) }}
+        {{ govukRadios({
+          idPrefix: "status",
+          name: "status",
+          fieldset: { legend: { text: "Status", classes: "govuk-visually-hidden" } },
+          items: statusOptions(task.status),
+          errorMessage: errors.fields.status
+        }) }}
+        {{ govukButton({ text: "Update status", classes: "govuk-button--secondary" }) }}
+      </form>
+
+      <div class="govuk-button-group">
+        {{ govukButton({ text: "Edit task", href: "/tasks/" + task.id + "/edit" }) }}
+        {{ govukButton({
+          text: "Delete task",
+          href: "/tasks/" + task.id + "/delete",
+          classes: "govuk-button--warning"
+        }) }}
+      </div>
+    </div>
+  </div>
+{% endblock %}

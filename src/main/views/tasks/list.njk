@@ -1,0 +1,47 @@
+{% extends "template.njk" %}
+
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block pageTitle %}Your tasks - Manage tasks{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-xl">Your tasks</h1>
+
+      {{ govukButton({
+        text: "Create task",
+        href: "/tasks/new"
+      }) }}
+
+      {% if tasks.length %}
+        {% set rows = [] %}
+        {% for task in tasks %}
+          {% set s = statusPresentation(task.status) %}
+          {% set ignored = rows.push([
+            { html: '<a class="govuk-link" href="/tasks/' + task.id + '">' + (task.title | escape) + '</a>' },
+            { html: govukTag({ text: s.label, classes: "govuk-tag--" + s.colour }) },
+            { text: task.dueDateTime | formatDateTime }
+          ]) %}
+        {% endfor %}
+
+        {{ govukTable({
+          caption: "Tasks, soonest due first",
+          captionClasses: "govuk-visually-hidden",
+          firstCellIsHeader: false,
+          head: [
+            { text: "Title" },
+            { text: "Status" },
+            { text: "Due" }
+          ],
+          rows: rows
+        }) }}
+      {% else %}
+        <p class="govuk-body">You have no tasks yet.</p>
+        <p class="govuk-body">Select <strong>Create task</strong> to add your first one.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
