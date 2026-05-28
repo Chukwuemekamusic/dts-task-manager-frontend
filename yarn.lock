@@ -3673,13 +3673,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/config@npm:^3.3.0":
-  version: 3.3.4
-  resolution: "@types/config@npm:3.3.4"
-  checksum: c8f2e26257ce530d895666f81d35d62a0620fc26a2c76eea86677a405688eefa6c60c0b2467970593bbfd6a930c718c4f92d722cb6422b5856c5c3cbcbcfcf13
-  languageName: node
-  linkType: hard
-
 "@types/connect@npm:*":
   version: 3.4.35
   resolution: "@types/connect@npm:3.4.35"
@@ -9261,7 +9254,6 @@ __metadata:
     "@hmcts/properties-volume": ^1.0.0
     "@types/body-parser": ^1.19.2
     "@types/chai-as-promised": ^7.1.5
-    "@types/config": ^3.3.0
     "@types/cookie-parser": ^1.4.3
     "@types/csurf": ^1.11.2
     "@types/es6-promisify": ^6.0.1
