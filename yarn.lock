@@ -6544,12 +6544,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"config@npm:^3.3.9":
-  version: 3.3.11
-  resolution: "config@npm:3.3.11"
+"config@npm:4.4.1":
+  version: 4.4.1
+  resolution: "config@npm:4.4.1"
   dependencies:
     json5: ^2.2.3
-  checksum: 84d783978ca7bf74bc6347868b6db29b853f5eda66021a04d77a84027b8b8b9d2fb5744409de5a39a5d63d867c3ac5f4169407701fa48f380015065b2701b221
+  checksum: dd72b46a13e04d9b0eb0179a6a73dd57c18519ceb5d8041a5aa641a4ce26e40352affea33461a2bcce3b3a84f5f315648ecf5686db2b738f3276043f84d0a189
   languageName: node
   linkType: hard
 
@@ -9286,7 +9286,7 @@ __metadata:
     chai-as-promised: ^8.0.0
     chokidar: ^3.6.0
     codeceptjs: ^3.5.3
-    config: ^3.3.9
+    config: 4.4.1
     cookie-parser: ^1.4.6
     copy-webpack-plugin: 9.1.0
     css-loader: ^7.0.0

@@ -10,8 +10,8 @@ presentation layer over the Task REST API, which it consumes over HTTP.
 
 ## Prerequisites
 
-- **Node.js 20.x** (see `.nvmrc`; Node 18 also works). Avoid Node 23+ — a
-  transitive dependency (`node-config`) relies on a Node API removed there.
+- **Node.js** — the version pinned in `.nvmrc` (20.x) is recommended; Node 18
+  through 24 all work.
 - **Yarn** (the repo pins Yarn 3 via the `packageManager` field and uses
   Yarn Plug'n'Play, so no global install is needed — run through `corepack`).
 - **The backend Task API running on `http://localhost:4000`** for the app and
