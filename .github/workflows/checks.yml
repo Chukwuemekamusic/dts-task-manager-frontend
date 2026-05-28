@@ -16,5 +16,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - run: corepack enable && yarn --version
+      - run: corepack enable
+      # Install first: under Yarn PnP a script cannot run before the project is
+      # installed, and the Yarn cache is not committed (no zero-install).
+      - run: yarn install --immutable
       - run: yarn cichecks
